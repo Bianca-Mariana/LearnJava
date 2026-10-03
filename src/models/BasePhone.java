@@ -13,9 +13,7 @@ public abstract class BasePhone implements Phone {
     private String brand;
     private String model;
 
-    private Contact firstContact;
-    private Contact secondContact;
-
+    private List<Contact> contacts;
     private List<String> callHistory;
 
     public BasePhone(String brand, String model, int batteryLife, String serialNumber, String color, String material) {
@@ -26,51 +24,47 @@ public abstract class BasePhone implements Phone {
         this.serialNumber = serialNumber;
         this.color = color;
         this.material = material;
+        this.contacts = new ArrayList<>();
         this.callHistory = new ArrayList<>();
     }
 
     @Override
     public void addContact(String index, String phoneNumber, String firstName, String lastName) {
         Contact contact = new Contact(index, phoneNumber, firstName, lastName);
-        if (index.equals("1")) {
-            this.firstContact = contact;
-        } else if (index.equals("2")) {
-            this.secondContact = contact;
-        } else {
-            System.out.println("Doar contactul 1 sau 2 poate fi adaugat.");
-        }
+        contacts.add(contact);
     }
 
     @Override
     public Contact getFirstContact() {
-        if (firstContact != null) {
-            System.out.println(firstContact);
-        } else {
-            System.out.println("Nu exista primul contact.");
+        if (contacts.size() == 0) {
+            System.out.println("Nu exista contacte.");
+            return null;
         }
-        return firstContact;
+
+        Contact primul = contacts.get(0);
+        System.out.println(primul);
+        return primul;
     }
 
     @Override
     public Contact getLastContact() {
-        if (secondContact != null) {
-            System.out.println(secondContact);
-            return secondContact;
-        } else if (firstContact != null) {
-            System.out.println(firstContact);
-            return firstContact;
-        } else {
+        if (contacts.size() == 0) {
             System.out.println("Nu exista contacte.");
             return null;
         }
+
+        int ultimulIndex = contacts.size() - 1;
+        Contact ultimul = contacts.get(ultimulIndex);
+        System.out.println(ultimul);
+        return ultimul;
     }
 
     private Contact findContactByPhoneNumber(String phoneNumber) {
-        if (firstContact != null && firstContact.getPhoneNumber().equals(phoneNumber)) {
-            return firstContact;
-        }
-        if (secondContact != null && secondContact.getPhoneNumber().equals(phoneNumber)) {
-            return secondContact;
+        for (int i = 0; i < contacts.size(); i++) {
+            Contact c = contacts.get(i);
+            if (c.getPhoneNumber().equals(phoneNumber)) {
+                return c;
+            }
         }
         return null;
     }
@@ -95,7 +89,7 @@ public abstract class BasePhone implements Phone {
 
         boolean added = contact.addMessage(messageContent);
         if (added) {
-            currentBatteryLife -= 1;
+            currentBatteryLife = currentBatteryLife - 1;
         }
     }
 
@@ -134,7 +128,7 @@ public abstract class BasePhone implements Phone {
             return;
         }
 
-        currentBatteryLife -= 2;
+        currentBatteryLife = currentBatteryLife - 2;
         Contact contact = findContactByPhoneNumber(phoneNumber);
         
         String nume = phoneNumber;
@@ -148,11 +142,11 @@ public abstract class BasePhone implements Phone {
     @Override
     public void viewHistory() {
         System.out.println("Istoric apeluri (" + brand + " " + model + "):");
-        if (callHistory.isEmpty()) {
+        if (callHistory.size() == 0) {
             System.out.println("Nu exista apeluri in istoric.");
         } else {
-            for (String call : callHistory) {
-                System.out.println("- " + call);
+            for (int i = 0; i < callHistory.size(); i++) {
+                System.out.println("- " + callHistory.get(i));
             }
         }
     }
