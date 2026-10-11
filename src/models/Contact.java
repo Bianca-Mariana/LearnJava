@@ -1,32 +1,26 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Contact {
     private String index;
     private String phoneNumber;
     private String firstName;
     private String lastName;
 
-    private String firstMessage;
-    private String secondMessage;
+    private List<String> messages;
 
     public Contact(String index, String phoneNumber, String firstName, String lastName) {
         this.index = index;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.messages = new ArrayList<>();
     }
 
-    public boolean addMessage(String messageContent) {
-        if (firstMessage == null) {
-            firstMessage = messageContent;
-            return true;
-        } else if (secondMessage == null) {
-            secondMessage = messageContent;
-            return true;
-        } else {
-            System.out.println("Contactul " + firstName + " " + lastName + " are deja 2 mesaje salvate!");
-            return false;
-        }
+    public void addMessage(String messageContent) {
+        messages.add(messageContent);
     }
 
     public String getIndex() {
@@ -46,11 +40,17 @@ public class Contact {
     }
 
     public String getFirstMessage() {
-        return firstMessage;
+        if (messages.size() < 1) {
+            return null;
+        }
+        return messages.get(0);
     }
 
     public String getSecondMessage() {
-        return secondMessage;
+        if (messages.size() < 2) {
+            return null;
+        }
+        return messages.get(1);
     }
 
     @Override

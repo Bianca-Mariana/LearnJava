@@ -87,10 +87,8 @@ public abstract class BasePhone implements Phone {
             return;
         }
 
-        boolean added = contact.addMessage(messageContent);
-        if (added) {
-            currentBatteryLife = currentBatteryLife - 1;
-        }
+        contact.addMessage(messageContent);
+        currentBatteryLife = currentBatteryLife - 1;
     }
 
     @Override

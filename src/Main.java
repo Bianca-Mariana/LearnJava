@@ -10,6 +10,7 @@ public class Main {
 
         phone.addContact("1", "0722123456", "Ion", "Popescu");
         phone.addContact("2", "0733987654", "Maria", "Ionescu");
+        phone.addContact("3", "0766555444", "Andrei", "Stan");
 
         phone.getFirstContact();
         phone.getLastContact();
